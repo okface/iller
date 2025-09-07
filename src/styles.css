@@ -1,0 +1,81 @@
+/* minimal styles + tailwind-like utilities used */
+html, body, #root { height: 100%; }
+body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: #fafafa; }
+
+.border { border: 1px solid #e5e7eb; }
+.border-dashed { border-style: dashed; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.p-3 { padding: .75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.px-3 { padding-left: .75rem; padding-right: .75rem; }
+.py-2 { padding-top: .5rem; padding-bottom: .5rem; }
+.text-xs { font-size: .75rem; }
+.text-sm { font-size: .875rem; }
+.text-lg { font-size: 1.125rem; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.text-slate-500 { color: #64748b; }
+.text-slate-600 { color: #475569; }
+.text-slate-700 { color: #334155; }
+.text-slate-800 { color: #1f2937; }
+.text-slate-900 { color: #0f172a; }
+.bg-white { background: #fff; }
+.bg-purple-50 { background: #faf5ff; }
+.bg-purple-100 { background: #f3e8ff; }
+.bg-purple-200 { background: #e9d5ff; }
+.bg-purple-50\/70 { background: rgba(250,245,255,0.7); }
+.bg-emerald-50 { background: #ecfdf5; }
+.bg-rose-50 { background: #fff1f2; }
+.border-purple-100 { border-color: #f3e8ff; }
+.border-purple-200 { border-color: #e9d5ff; }
+.border-emerald-200 { border-color: #a7f3d0; }
+.border-emerald-300 { border-color: #6ee7b7; }
+.border-rose-200 { border-color: #fecdd3; }
+.border-rose-300 { border-color: #fda4af; }
+.text-purple-600 { color: #7c3aed; }
+.text-purple-700 { color: #6d28d9; }
+.text-emerald-700 { color: #047857; }
+.text-rose-700 { color: #be123c; }
+.bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to)); }
+.from-purple-600 { --tw-gradient-from: #7c3aed; }
+.to-fuchsia-600 { --tw-gradient-to: #c026d3; }
+.inline-flex { display: inline-flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: .5rem; }
+.gap-3 { gap: .75rem; }
+.grid { display: grid; }
+.text-center { text-align: center; }
+.shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.max-w-6xl { max-width: 72rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.sticky { position: sticky; }
+.top-0 { top: 0; }
+.z-30 { z-index: 30; }
+.border-b { border-bottom: 1px solid #e5e7eb; }
+.hidden { display: none; }
+.mt-1{ margin-top: .25rem; }
+.mt-2{ margin-top: .5rem; }
+.mt-3{ margin-top: .75rem; }
+.mt-4{ margin-top: 1rem; }
+.mt-5{ margin-top: 1.25rem; }
+.mb-1{ margin-bottom: .25rem; }
+.mb-2{ margin-bottom: .5rem; }
+.h-32 { height: 8rem; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.backdrop-blur { backdrop-filter: blur(10px); }
+.supports-\[backdrop-filter\]:bg-white\/60 { background: rgba(255,255,255,.6); }
+.bg-white\/80 { background: rgba(255,255,255,.8); }
+
+/* simple utility classes used in component markup not defined here will be ignored gracefully */
