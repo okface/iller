@@ -1,16 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import yaml from 'js-yaml'
-import { Upload, CheckCircle2, XCircle, RefreshCcw, Play, HelpCircle, ClipboardList, Sparkles, BarChart2, BookOpenCheck, Brain, Shuffle, Settings, Download, Trash2, ChevronLeft, ChevronRight, Eye, EyeOff, Info, Bug } from 'lucide-react'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from 'recharts'
+import { CheckCircle2, XCircle, RefreshCcw, Play, HelpCircle, Sparkles, BookOpenCheck, Brain, Shuffle, ChevronLeft, ChevronRight, Eye, EyeOff, Info } from 'lucide-react'
+// recharts removed in simplified UI
 
 // shadcn/ui (all libs available per instructions)
 import { Button } from "@/components/ui/button"
@@ -19,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
+// textarea removed in simplified UI
 import { Badge } from "@/components/ui/badge"
 
 // ===================== Types =====================
@@ -44,119 +36,12 @@ import { Badge } from "@/components/ui/badge"
  */
 
 // ===================== Constants =====================
-const PROGRESS_KEY = 'medstudy_progress_v2'
-const DATA_KEY = 'medstudy_questions_v1'
-
-// ===== Bundle mode (ships with questions pre-packaged) =====
-// Set to true for the build you give your partner. When true, the app
-// loads questions from BUNDLED_YAML on first run and keeps the uploader optional.
 const BUNDLE_MODE = true
-
-// Toggle diagnostics panel with basic tests
+const DATA_KEY = 'medstudy.v1.questions'
+const PROGRESS_KEY = 'medstudy.v1.progress'
 const SHOW_TESTS_BY_DEFAULT = false
-
-// Paste your full 300-question YAML between the backticks below.
-// It should be an array with entries that include uses_image: false to be included.
-// Example placeholders shown — replace with your real deck.
+// Large embedded YAML dataset follows. Keep as-is between backticks.
 const BUNDLED_YAML = `
-- number: 1.1
-  category: Kardiologi
-  uses_image: false
-  question: En 65 årig man söker på akutmottagningen med bröstsmärta sedan en timma.
-    Han har varit illamående och kräkts. Du ordinerar ett EKG som ser ut enligt nedan.
-    Vilket kranskärl är det mest sannolikt stopp i?
-  options:
-  - LCX (left circumflex artery)
-  - OM (obtuse marginal artery
-  - RCA (right coronary artery)
-  - LAD (left anterior descending artery)
-  - Huvudstam
-  correct_option_index: 2
-  more_information: ST-höjning i de inferiora avledningarna (II, III, aVF) talar för
-    en inferiorinfarkt, vilket oftast orsakas av ocklusion i höger kranskärl (RCA).
-    LCX/OM kan ibland ge inferiora förändringar men är mindre vanlig orsaksorsak i
-    detta mönster, medan LAD ger anteriort mönster (V1–V4) och huvudstamsocklusion
-    ger omfattande, utbredda ST‑förändringar.
-- number: 1.2
-  category: Kardiologi
-  uses_image: false
-  question: Vilka mediciner skrivs en tidigare frisk patienten hem med efter en PCI-behandlad
-    okomplicerad hjärtinfarkt (i normalfallet)
-  options:
-  - Acetylsalisylsyra + warfarin + statin + nitrospray
-  - P2Y12 hämmare + DOAK + statin + nitrospray
-  - Acetylsalisylsyra + DOAK + statin + nitrospray
-  - P2Y12 hämmare + Waran+ statin+ nitrospray
-  - Acetylsalisylsyra + P2Y12 hämmare + statin + nitrospray
-  correct_option_index: 4
-  more_information: Efter PCI vid en okomplicerad hjärtinfarkt ordineras vanligtvis
-    dubbel trombocythämning med acetylsalicylsyra plus en P2Y12-hämmare tillsammans
-    med statin och nitrospray för symtomlindring. Antikoagulantia som warfarin eller
-    DOAK används endast vid samtidig indikation (t.ex. förmaksflimmer eller vänsterkammarthrombos),
-    så de alternativen är inte rutinmässiga.
-- number: 1.3
-  category: Kardiologi
-  uses_image: false
-  question: Vilka sekundärpreventiva mål har vi efter en hjärtinfarkt hos en person
-    < 70 år?
-  options:
-  - Blodtryck < 140 / < 90 mmHg och LDL < 1.8 mmol/L
-  - Blodtryck < 130 / < 80 mmHg och LDL < 1.4 mol/L
-  - Blodtryck < 140 / < 80 mmHg och LDL < 1.4 mmol/L
-  - Blodtryck < 120 / < 70 mmHg och LDL < 1.8 mmol/L
-  - Blodtryck < 130 / < 80 mmHg och LDL < 1.8 mmol/L
-  correct_option_index: 1
-  more_information: Målen är blodtryck <130/80 mmHg och LDL-kolesterol <1,4 mmol/L;
-    dessa mer aggressiva mål gäller för sekundärprevention hos patienter <70 år efter
-    hjärtinfarkt. Högre blodtrycks- eller LDL-gränser är mindre skyddande, medan mycket
-    låga blodtrycksmål (t.ex. <120/70) kan vara onödigt eller riskera hypotension;
-    notera att LDL-enheten ska vara mmol/L.
-- number: 1.4
-  category: Kardiologi
-  uses_image: false
-  question: 'En 73-årig kvinna inkommer till akuten med ambulans p.g.a. andningssvårigheter.
-    Symtomen började för några veckor sedan och har senaste dagarna förvärrats. Hon
-    har även upplevt besvärande hosta nattetid. Ringt ambulans idag p.g.a. än mer
-    besvär med andningen. Förnekar smärtor. Patienten har en känd hjärtsvikt med EF
-    35 % på basen av koronarischemi inkluderande 2 tidigare hjärtinfarkter, den senaste
-    för 3 år sedan. Efter denna har hon inte haft några bröstsmärtor. Aktuella mediciner:
-    Bisoprolol 2,5 mg 1x1, Enalapril 10 mg 1x1, Furosemid 40 mg 1 vid behov, Trombyl
-    75 mg 1x1, Atorvastatin 80 mg 1x1 Status; Samtalsdyspné. POX 92 % med 5 liter
-    syrgas på mask. Andningsfrekvens 30/min.  Varm perifert. Lungor: Lösa rassel upp
-    till hilusnivå bilateralt. Hjärta: Oregelbunden rytm, frekvens 105/min, halsvenstas.
-    Blodtryck 140/80. Varm perifert. EKG visar förmaksflimmer med frekvens 100-110
-    slag/min samt Q-vågor inferiort, inga tecken till pågående ischemi. Ingen feber.
-    Vilket av följande alternativ utgör förstahandsbehandlingen av detta tillstånd?'
-  options:
-  - Intravenös Betablockad samt Furosemid.
-  - Intravenöst Milrinon (inotropi-stöd) samt CPAP-behandling.
-  - Intravenöst Digoxin samt CPAP-behandling.
-  - Elkonvertering akut
-  - Intravenöst Nitroglycerin samt CPAP-behandling.
-  correct_option_index: 4
-  more_information: Akut vänsterkammarsvikt med lungödem behandlas först med syrgas/CPAP
-    för att förbättra gasutbyte och vasodilatation med intravenöst nitroglycerin för
-    att minska preload/afterload och snabbt avlasta hjärtat. Betablockad är olämpligt
-    vid akut dekompensation, inotropa droger som milrinon används vid hypotension/kardiogen
-    chock, digoxin ger inte snabb avlastning, och akut elkonvertering behövs bara
-    vid hemodynamisk instabilitet eller svår takykardi som inte svarar på läkemedel.
-- number: 1.5
-  category: Kardiologi
-  uses_image: false
-  question: Vilket av följande påståenden angående terapi för patienter med hjärtsvikt
-    är INTE rätt?
-  options:
-  - Regelbunden fysisk träning förbättrar fysisk kapacitet hos hjärtsviktspatienter
-    men minskar
-  - inte mortaliteten.
-  - Angiotension-receptorblockerande läkemedel (ARB) är mindre effektiva än angiotensin-
-  - converting enzyme (ACE) hämmare avseende reduktion av mortalitet hos patienter
-    med
-  - hjärtsvikt med nedsatt ejektionsfraktion (EF). Spironolakton ger minskad mortalitet
-    hos patienter med nedsatt ejektionsfraktion (EF). Digoxin har ingen effekt avseende
-    reduktion av mortalitet hos patienter med hjärtsvikt med nedsatt ejektionsfraktion
-    (EF). ACE-hämmare är indicerat för alla patienter med hjärtsvikt med nedsatt ejektionsfraktion
-    (EF) oavsett NYHA-klass.
   correct_option_index: 3
   more_information: 'Påståendet att angiotensin‑receptorblockerare (ARB) är mindre
     effektiva än ACE‑hämmare när det gäller mortalitetsreduktion är felaktigt; ARB
@@ -6090,11 +5975,9 @@ export default function MedStudyApp() {
   const [questions, setQuestions] = useState(() => loadSavedQuestions())
   const [deferredInstall, setDeferredInstall] = useState(null)
   const [progress, setProgress] = useState(() => loadProgress())
-  const [tab] = useState('study')
   const [categoryFilter, setCategoryFilter] = useState('All')
-  const [search, setSearch] = useState('')
   const [randomize, setRandomize] = useState(true)
-  const [mode, setMode] = useState('flashcards') // 'flashcards' | 'quiz'
+  const [mode, setMode] = useState(null) // null | 'flashcards' | 'quiz'
   const [sessionSize, setSessionSize] = useState(20)
   const [showInfo, setShowInfo] = useState(true)
   const [testResults, setTestResults] = useState([])
@@ -6137,13 +6020,8 @@ export default function MedStudyApp() {
   const filtered = useMemo(() => {
     const base = questions.filter((q) => q.uses_image === false)
     const byCat = categoryFilter === 'All' ? base : base.filter((q) => q.category === categoryFilter)
-    const bySearch = search
-      ? byCat.filter((q) =>
-          (q.question + ' ' + q.options.join(' ') + ' ' + (q.more_information || '')).toLowerCase().includes(search.toLowerCase())
-        )
-      : byCat
-    return randomize ? shuffle(bySearch) : bySearch
-  }, [questions, categoryFilter, search, randomize])
+    return randomize ? shuffle(byCat) : byCat
+  }, [questions, categoryFilter, randomize])
 
   // Build a session subset
   const session = useMemo(() => filtered.slice(0, Math.max(1, sessionSize)), [filtered, sessionSize])
@@ -6186,136 +6064,93 @@ export default function MedStudyApp() {
     })
   }
 
-  function resetAll() {
-    if (confirm('Reset ALL saved questions and progress?')) {
-      localStorage.removeItem(DATA_KEY)
-      localStorage.removeItem(PROGRESS_KEY)
-      setQuestions([])
-      setProgress({ perQuestion: {}, daily: {}, streak: 0, lastStudyDate: null })
-    }
+  function startSession(chosenMode) {
+    setMode(chosenMode)
+    window.scrollTo({ top: 0 })
   }
 
-  function exportProgress() {
-    const blob = new Blob([JSON.stringify(progress, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `medstudy-progress-${todayKey()}.json`
-    a.click()
-    URL.revokeObjectURL(url)
+  function exitSession() {
+    setMode(null)
+    window.scrollTo({ top: 0 })
   }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-50 via-white to-purple-100 text-slate-800">
-      <header className="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-purple-100">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-md">
-              <Sparkles className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold text-slate-900">MedStudy — Purple</h1>
-              <p className="text-xs text-slate-500 -mt-1">Minimal • Engaging • Flashcards & Quizzes</p>
-            </div>
-          </div>
+      {/* Slim header */}
+      <header className="sticky top-0 z-30 bg-white/90 border-b border-purple-100">
+        <div className="max-w-xl mx-auto px-3 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {deferredInstall && (
-              <Button className="gap-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={async () => { await deferredInstall.prompt(); const _ = await deferredInstall.userChoice; setDeferredInstall(null) }}>
-                <Download className="h-4 w-4" />Install
-              </Button>
-            )}
-            <Button variant="ghost" className="gap-2" onClick={exportProgress}><Download className="h-4 w-4" />Export</Button>
-            <Button variant="ghost" className="gap-2 text-rose-600 hover:text-rose-700" onClick={resetAll}><Trash2 className="h-4 w-4"/>Reset</Button>
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-sm">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
+            <h1 className="text-base font-semibold text-slate-900">MedStudy</h1>
           </div>
+          {deferredInstall && (
+            <Button size="sm" className="gap-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={async () => { await deferredInstall.prompt(); const _ = await deferredInstall.userChoice; setDeferredInstall(null) }}>
+              Install
+            </Button>
+          )}
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6">
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
-          <Card className="md:col-span-2 shadow-sm border-purple-100">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-slate-900"><BookOpenCheck className="h-5 w-5 text-purple-600"/>Study Session</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap items-center gap-3">
-                <ModeToggle mode={mode} setMode={setMode} />
-                <div className="hidden sm:block h-6 w-px bg-slate-200" />
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                  <SelectTrigger className="w-44"><SelectValue placeholder="Category"/></SelectTrigger>
-                  <SelectContent>
-                    {categories.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="search" className="text-xs text-slate-500">Search</Label>
-                  <Input id="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="keyword…" className="w-44"/>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch id="randomize" checked={randomize} onCheckedChange={setRandomize} />
-                  <Label htmlFor="randomize" className="text-xs text-slate-500 flex items-center gap-1"><Shuffle className="h-3 w-3"/>Random</Label>
-                </div>
-                {mode === 'quiz' && (
+      <main className="max-w-xl mx-auto px-3 py-4">
+        {/* Start screen */}
+        {mode == null && (
+          <div className="space-y-3">
+            <Card className="border-purple-100">
+              <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-slate-900"><BookOpenCheck className="h-5 w-5 text-purple-600"/>Start</CardTitle></CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
-                    <Label htmlFor="session" className="text-xs text-slate-500">Questions</Label>
-                    <Input id="session" type="number" min={1} max={200} value={sessionSize} onChange={(e) => setSessionSize(Number(e.target.value))} className="w-24"/>
+                    <Label className="text-xs text-slate-500">Category</Label>
+                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                      <SelectTrigger className="w-40"><SelectValue placeholder="All"/></SelectTrigger>
+                      <SelectContent>
+                        {categories.map((c) => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                )}
-                <div className="ml-auto flex items-center gap-2">
-                  <Badge className="bg-purple-100 text-purple-700 border border-purple-200">{filtered.length} ready</Badge>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs text-slate-500">Questions</Label>
+                    <Input type="number" min={1} max={200} value={sessionSize} onChange={(e) => setSessionSize(Number(e.target.value))} className="w-24"/>
+                    <div className="flex items-center gap-2 ml-auto">
+                      <Switch id="randomize" checked={randomize} onCheckedChange={setRandomize} />
+                      <Label htmlFor="randomize" className="text-xs text-slate-500 flex items-center gap-1"><Shuffle className="h-3 w-3"/>Random</Label>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('flashcards')}><Brain className="h-4 w-4 mr-1"/> Flashcards</Button>
+                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('quiz')}><HelpCircle className="h-4 w-4 mr-1"/> Quiz</Button>
+                  </div>
+                  <div className="text-xs text-slate-500">{filtered.length} questions available</div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
-              <div className="mt-4">
-                {mode === 'flashcards' ? (
-                  <Flashcards key={`${categoryFilter}-${search}-${randomize}`} items={session} onGrade={recordStudy} showInfo={showInfo} setShowInfo={setShowInfo}/>
-                ) : (
-                  <Quiz key={`${categoryFilter}-${search}-${randomize}-${sessionSize}`} items={session} onGrade={recordStudy} />
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-sm border-purple-100">
-            <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-slate-900"><BarChart2 className="h-5 w-5 text-purple-600"/>Progress</CardTitle></CardHeader>
-            <CardContent>
-              <ProgressPanel progress={progress} questions={questions} />
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-4">
-          <Card className="shadow-sm border-purple-100">
-            <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-slate-900"><Upload className="h-5 w-5 text-purple-600"/>Upload or Paste YAML</CardTitle></CardHeader>
-            <CardContent>
-              <Uploader onAdd={(newQs) => setQuestions((prev) => mergeQuestions(prev, newQs))} />
-              <div className="mt-3 flex flex-wrap gap-2">
-                <Button variant="secondary" className="gap-2" onClick={() => {
-                  try {
-                    const raw = yaml.load(SAMPLE_YAML)
-                    const parsed = normalizeQuestions(raw)
-                    if (!parsed.length) return alert('No questions with uses_image: false found in sample.')
-                    setQuestions((prev) => mergeQuestions(prev, parsed))
-                  } catch (e) {
-                    alert('Failed to load sample: ' + e)
-                  }
-                }}><ClipboardList className="h-4 w-4"/>Load sample</Button>
-              </div>
-              <p className="mt-2 text-xs text-slate-500">Only questions with <code>uses_image: false</code> are included automatically.</p>
-            </CardContent>
-          </Card>
-
-          <TipsCard />
-        </div>
-
-        <div className="mt-6">
-          <TestsPanel results={testResults} show={showTests} onToggle={() => setShowTests(s => !s)} />
-        </div>
+        {/* Study screen (minimal chrome) */}
+        {mode != null && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-xs text-slate-500">
+              <Button size="sm" variant="ghost" onClick={exitSession}>Back</Button>
+              <div className="h-6" />
+            </div>
+            <div className="mt-0">
+              {mode === 'flashcards' ? (
+                <Flashcards key={`${categoryFilter}-${randomize}`} items={session} onGrade={recordStudy} showInfo={showInfo} setShowInfo={setShowInfo}/>
+              ) : (
+                <Quiz key={`${categoryFilter}-${randomize}-${sessionSize}`} items={session} onGrade={recordStudy} />
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
-      <footer className="max-w-6xl mx-auto px-4 pb-10 pt-4 text-center text-xs text-slate-500">
-        Built with ❤️ in purple tones. Your data stays in your browser (localStorage).
+      <footer className="max-w-xl mx-auto px-3 pb-6 pt-2 text-center text-[11px] text-slate-500">
+        Offline-ready • Progress saved on device
       </footer>
     </div>
   )
