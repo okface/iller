@@ -6356,6 +6356,10 @@ function Flashcards({ items, onGrade, showInfo, setShowInfo }) {
 
   if (!current) return <EmptyState />
 
+  const displayId = current?.number != null
+    ? `#${current.number}`
+    : (current?.id ? `#${(current.id.split('__')[1] || current.id)}` : '')
+
   return (
     <div>
       <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
@@ -6381,13 +6385,40 @@ function Flashcards({ items, onGrade, showInfo, setShowInfo }) {
         animate={{ rotateY: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 14 }}
         className="bg-white border border-purple-200 rounded-2xl p-5 shadow-sm"
+        style={{ position: 'relative' }}
       >
+        {!!displayId && (
+          <span
+            style={{ position: 'absolute', top: 8, right: 10, fontSize: 10, color: '#64748b' }}
+            aria-label="Question ID"
+          >
+            {displayId}
+          </span>
+        )}
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-lg font-medium text-slate-900 leading-snug">{current.question}</h3>
           <Button size="sm" variant="ghost" className="text-purple-700" onClick={() => setRevealed((r) => !r)}>
             {revealed ? <><EyeOff className="h-4 w-4 mr-1"/>Hide</> : <><Eye className="h-4 w-4 mr-1"/>Reveal</>}
           </Button>
         </div>
+
+        {/* Display all options as small outlined boxes so you can think before reveal */}
+        {Array.isArray(current.options) && current.options.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {current.options.map((opt, i) => {
+              const isCorrect = i === current.correct_option_index
+              const baseCls = 'rounded-xl border px-3 py-1.5 text-sm bg-white'
+              const stateCls = revealed && isCorrect ? ' border-emerald-300 bg-emerald-50' : ' border-slate-200'
+              return (
+                <div key={i} className={baseCls + stateCls}>
+                  <span className="text-slate-700">
+                    {String.fromCharCode(65 + i)}. {opt}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        )}
 
         <AnimatePresence initial={false}>
           {revealed && (
