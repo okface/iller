@@ -1,4 +1,5 @@
-const CACHE = "medstudy-cache-v1";
+// Bump cache name to force clients to fetch fresh assets after deploys
+const CACHE = "medstudy-cache-v3";
 
 self.addEventListener("install", (e) => {
   self.skipWaiting();

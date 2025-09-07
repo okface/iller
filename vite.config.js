@@ -10,5 +10,6 @@ export default defineConfig(({ mode }) => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: process.env.VITE_BASE || '/',
+  // When deploying to GitHub Pages under /iller/, ensure assets resolve correctly
+  base: process.env.VITE_BASE || '/iller/',
 }))
