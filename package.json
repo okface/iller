@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build", 
+    "preview": "vite preview",
+    "validate": "npm run build && timeout 10 vite preview & sleep 5 && curl -f http://localhost:4173/iller/ -o /dev/null || curl -f http://localhost:4174/iller/ -o /dev/null || curl -f http://localhost:4175/iller/ -o /dev/null && echo 'Build and preview validation successful'"
   },
   "dependencies": {
     "framer-motion": "^11.1.7",
