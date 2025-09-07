@@ -12,6 +12,7 @@ Installable, offline-first study app. Paste your YAML into `BUNDLED_YAML`, build
 - Dev server: `npm run dev`
 - Build: `npm run build`
 - Preview built app: `npm run preview`
+- Validate build and preview: `npm run validate` (for automation/CI)
 
 Service worker registers automatically in production/preview.
 

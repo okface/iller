@@ -11,6 +11,7 @@ MedStudy is an installable, offline-first study application for medical exam que
 - Development server: `npm run dev` — starts on http://localhost:5173/iller/
 - Build for production: `npm run build` — takes ~3 seconds. NEVER CANCEL. Set timeout to 60+ minutes for safety.
 - Preview production build: `npm run preview` — serves built app on http://localhost:4173/iller/
+- Validate build and preview: `npm run validate` — builds, tests preview server, and exits (for automation/CI)
 
 ### Application Structure
 - **Main Component**: `medical_exam_study_app_purple_edition.jsx` — Core React component with all application logic
