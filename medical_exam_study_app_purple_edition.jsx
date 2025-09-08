@@ -188,7 +188,7 @@ export default function MedStudyApp() {
   const [categoryFilter, setCategoryFilter] = useState('All')
   const [randomize, setRandomize] = useState(true)
   const [mode, setMode] = useState(null) // null | 'flashcards' | 'quiz'
-  const [sessionSize, setSessionSize] = useState(20)
+  const [sessionSize, setSessionSize] = useState(5)
   const [showInfo, setShowInfo] = useState(true)
   const [testResults, setTestResults] = useState([])
   const [showTests, setShowTests] = useState(SHOW_TESTS_BY_DEFAULT)
