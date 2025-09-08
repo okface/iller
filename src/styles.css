@@ -69,9 +69,13 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .mb-2{ margin-bottom: .5rem; }
 .h-32 { height: 8rem; }
 .w-full { width: 100%; }
+.w-16 { width: 4rem; }
 .min-h-screen { min-height: 100vh; }
 .flex { display: flex; }
 .flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1 1 0%; }
+.flex-shrink-0 { flex-shrink: 0; }
+.min-w-0 { min-width: 0px; }
 .items-start { align-items: flex-start; }
 .justify-between { justify-content: space-between; }
 .backdrop-blur { backdrop-filter: blur(10px); }

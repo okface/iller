@@ -314,9 +314,9 @@ export default function MedStudyApp() {
               <CardContent>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
-                    <Label className="text-xs text-slate-500">Category</Label>
+                    <Label className="text-xs text-slate-500 flex-shrink-0">Category</Label>
                     <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                      <SelectTrigger className="w-40"><SelectValue placeholder="All"/></SelectTrigger>
+                      <SelectTrigger className="flex-1 min-w-0"><SelectValue placeholder="All"/></SelectTrigger>
                       <SelectContent>
                         {categories.map((c) => (
                           <SelectItem key={c} value={c}>{c}</SelectItem>
@@ -324,10 +324,12 @@ export default function MedStudyApp() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs text-slate-500">Questions</Label>
-                    <Input type="number" min={1} max={200} value={sessionSize} onChange={(e) => setSessionSize(Number(e.target.value))} className="w-24"/>
-                    <div className="flex items-center gap-2 ml-auto">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-xs text-slate-500 flex-shrink-0">Questions</Label>
+                      <Input type="number" min={1} max={200} value={sessionSize} onChange={(e) => setSessionSize(Number(e.target.value))} className="w-16"/>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <Switch id="randomize" checked={randomize} onCheckedChange={setRandomize} />
                       <Label htmlFor="randomize" className="text-xs text-slate-500 flex items-center gap-1"><Shuffle className="h-3 w-3"/>Random</Label>
                     </div>
