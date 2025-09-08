@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // When deploying to GitHub Pages under /iller/, ensure assets resolve correctly
-  base: process.env.VITE_BASE || '/iller/',
+  // Base path for assets. Default to '/' for local/dev/most hosts.
+  // On GitHub Pages project sites, set env VITE_BASE="/<repo>/" (workflow already does this).
+  base: process.env.VITE_BASE || '/',
 }))
