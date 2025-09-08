@@ -24,7 +24,7 @@ Pick one:
 2) In GitHub → Settings → Pages: set "Build and deployment" to GitHub Actions.
 3) The included workflow `.github/workflows/deploy-pages.yml` builds and publishes `dist/` on every push to `main`.
 4) Your URL will be `https://<user>.github.io/<repo>/`.
-5) If you deploy under a subpath, set environment variable `VITE_BASE=/<repo>/` in repo Settings → Actions → Variables so the service worker path is correct.
+5) The workflow automatically sets the correct base path (`VITE_BASE=/<repo>/`) for subdirectory deployment.
 
 ### Netlify
 - Connect the repo or run `netlify deploy --prod`.
