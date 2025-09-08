@@ -28,6 +28,15 @@ jobs:
         run: npm run build
         env:
           VITE_BASE: "/${{ github.event.repository.name }}/"
+      - name: Verify build has correct base path
+        run: |
+          if ! grep -q "/${{ github.event.repository.name }}/" dist/index.html; then
+            echo "ERROR: Built index.html does not contain correct base path /${{ github.event.repository.name }}/"
+            echo "Content of dist/index.html:"
+            cat dist/index.html
+            exit 1
+          fi
+          echo "✅ Build verification passed: correct base path found in dist/index.html"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
