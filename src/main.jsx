@@ -7,8 +7,8 @@ function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       const base = import.meta.env.BASE_URL || '/'
-  const v = import.meta.env.VITE_SW_VERSION || String(Date.now())
-  const swUrl = `${base.replace(/\/$/, '/') }service-worker.js?v=${encodeURIComponent(v)}`
+      const v = import.meta.env.VITE_SW_VERSION || String(Date.now())
+      const swUrl = `${base.replace(/\/$/, '')}/service-worker.js?v=${encodeURIComponent(v)}`
       navigator.serviceWorker.register(swUrl).catch(console.error)
     })
   }

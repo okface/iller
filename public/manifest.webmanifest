@@ -1,7 +1,7 @@
 {
   "name": "MedStudy — Purple",
   "short_name": "MedStudy",
-  "start_url": ".",
+  "start_url": "/iller/",
   "display": "standalone",
   "background_color": "#faf5ff",
   "theme_color": "#7c3aed",
