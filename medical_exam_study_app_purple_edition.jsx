@@ -286,22 +286,24 @@ export default function MedStudyApp() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-purple-50 via-white to-purple-100 text-slate-800">
-      {/* Slim header */}
-      <header className="sticky top-0 z-30 bg-white/90 border-b border-purple-100">
-        <div className="max-w-xl mx-auto px-3 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-sm">
-              <Sparkles className="h-5 w-5 text-white" />
+      {/* Slim header - hidden in study modes for better mobile experience */}
+      {mode == null && (
+        <header className="sticky top-0 z-30 bg-white/90 border-b border-purple-100">
+          <div className="max-w-xl mx-auto px-3 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-sm">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-base font-semibold text-slate-900">MedStudy</h1>
             </div>
-            <h1 className="text-base font-semibold text-slate-900">MedStudy</h1>
+            {deferredInstall && (
+              <Button size="sm" className="gap-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={async () => { await deferredInstall.prompt(); const _ = await deferredInstall.userChoice; setDeferredInstall(null) }}>
+                Install
+              </Button>
+            )}
           </div>
-          {deferredInstall && (
-            <Button size="sm" className="gap-2 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={async () => { await deferredInstall.prompt(); const _ = await deferredInstall.userChoice; setDeferredInstall(null) }}>
-              Install
-            </Button>
-          )}
-        </div>
-      </header>
+        </header>
+      )}
 
       <main className="max-w-xl mx-auto px-3 py-4">
         {/* Start screen */}
