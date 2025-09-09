@@ -1,6 +1,8 @@
 /* minimal styles + tailwind-like utilities used */
+*, *::before, *::after { box-sizing: border-box; }
 html, body, #root { height: 100%; }
-body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: #fafafa; }
+body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: #fafafa; overflow-x: hidden; }
+img, video { max-width: 100%; height: auto; }
 
 .border { border: 1px solid #e5e7eb; }
 .border-dashed { border-style: dashed; }
@@ -11,7 +13,10 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .p-4 { padding: 1rem; }
 .p-5 { padding: 1.25rem; }
 .px-3 { padding-left: .75rem; padding-right: .75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
 .py-2 { padding-top: .5rem; padding-bottom: .5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 .text-xs { font-size: .75rem; }
 .text-sm { font-size: .875rem; }
 .text-lg { font-size: 1.125rem; }
@@ -23,6 +28,8 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .text-slate-800 { color: #1f2937; }
 .text-slate-900 { color: #0f172a; }
 .bg-white { background: #fff; }
+.bg-white\/90 { background: rgba(255,255,255,.9); }
+.bg-white\/80 { background: rgba(255,255,255,.8); }
 .bg-purple-50 { background: #faf5ff; }
 .bg-purple-100 { background: #f3e8ff; }
 .bg-purple-200 { background: #e9d5ff; }
@@ -44,17 +51,18 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .to-fuchsia-600 { --tw-gradient-to: #c026d3; }
 .inline-flex { display: inline-flex; }
 .items-center { align-items: center; }
+.items-start { align-items: flex-start; }
 .justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
 .gap-2 { gap: .5rem; }
 .gap-3 { gap: .75rem; }
 .grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .text-center { text-align: center; }
 .shadow-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
 .max-w-6xl { max-width: 72rem; }
+.max-w-xl { max-width: 36rem; }
 .mx-auto { margin-left: auto; margin-right: auto; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 .sticky { position: sticky; }
 .top-0 { top: 0; }
 .z-30 { z-index: 30; }
@@ -68,18 +76,38 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 .mb-1{ margin-bottom: .25rem; }
 .mb-2{ margin-bottom: .5rem; }
 .h-32 { height: 8rem; }
+.h-6 { height: 1.5rem; }
+.h-5 { height: 1.25rem; }
+.h-4 { height: 1rem; }
+.h-8 { height: 2rem; }
 .w-full { width: 100%; }
 .w-16 { width: 4rem; }
+.w-6 { width: 1.5rem; }
+.w-5 { width: 1.25rem; }
+.w-4 { width: 1rem; }
+.w-8 { width: 2rem; }
 .min-h-screen { min-height: 100vh; }
 .flex { display: flex; }
 .flex-wrap { flex-wrap: wrap; }
 .flex-1 { flex: 1 1 0%; }
 .flex-shrink-0 { flex-shrink: 0; }
 .min-w-0 { min-width: 0px; }
-.items-start { align-items: flex-start; }
-.justify-between { justify-content: space-between; }
 .backdrop-blur { backdrop-filter: blur(10px); }
 .supports-\[backdrop-filter\]:bg-white\/60 { background: rgba(255,255,255,.6); }
-.bg-white\/80 { background: rgba(255,255,255,.8); }
+
+/* Text wrapping helpers to avoid horizontal overflow on narrow screens */
+.break-words { overflow-wrap: break-word; word-break: break-word; }
+.break-anywhere { overflow-wrap: anywhere; word-break: break-word; }
+
+/* Responsive helpers */
+.hide-on-mobile { display: initial; }
+.stack-sm { flex-direction: row; }
+@media (max-width: 480px) {
+	.grid-cols-2 { grid-template-columns: 1fr; }
+	.stack-sm { flex-direction: column; align-items: stretch; }
+	.hide-on-mobile { display: none !important; }
+	/* Make buttons take full width when stacked */
+	.btn-full-sm { width: 100%; }
+}
 
 /* simple utility classes used in component markup not defined here will be ignored gracefully */

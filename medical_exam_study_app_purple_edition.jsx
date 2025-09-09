@@ -305,7 +305,7 @@ export default function MedStudyApp() {
         </header>
       )}
 
-      <main className="max-w-xl mx-auto px-3 py-4">
+  <main className="max-w-xl mx-auto px-3 py-4 break-words">
         {/* Start screen */}
         {mode == null && (
           <div className="space-y-3">
@@ -313,7 +313,7 @@ export default function MedStudyApp() {
               <CardHeader className="pb-2"><CardTitle className="flex items-center gap-2 text-slate-900"><BookOpenCheck className="h-5 w-5 text-purple-600"/>Start</CardTitle></CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 stack-sm">
                     <Label className="text-xs text-slate-500 flex-shrink-0">Category</Label>
                     <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                       <SelectTrigger className="flex-1 min-w-0"><SelectValue placeholder="All"/></SelectTrigger>
@@ -324,7 +324,7 @@ export default function MedStudyApp() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 stack-sm">
                     <div className="flex items-center gap-2">
                       <Label className="text-xs text-slate-500 flex-shrink-0">Questions</Label>
                       <Input type="number" min={1} max={200} value={sessionSize} onChange={(e) => setSessionSize(Number(e.target.value))} className="w-16"/>
@@ -335,8 +335,8 @@ export default function MedStudyApp() {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('flashcards')}><Brain className="h-4 w-4 mr-1"/> Flashcards</Button>
-                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('quiz')}><HelpCircle className="h-4 w-4 mr-1"/> Quiz</Button>
+                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white btn-full-sm" onClick={() => startSession('flashcards')}><Brain className="h-4 w-4 mr-1"/> Flashcards</Button>
+                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white btn-full-sm" onClick={() => startSession('quiz')}><HelpCircle className="h-4 w-4 mr-1"/> Quiz</Button>
                   </div>
                   <div className="text-xs text-slate-500">{filtered.length} questions available</div>
                 </div>
@@ -347,7 +347,7 @@ export default function MedStudyApp() {
 
         {/* Study screen (minimal chrome) */}
         {mode != null && (
-          <div className="space-y-3">
+          <div className="space-y-3 break-words">
             <div className="flex items-center justify-between text-xs text-slate-500">
               <Button size="sm" variant="ghost" onClick={exitSession}>Back</Button>
               <div className="h-6" />
