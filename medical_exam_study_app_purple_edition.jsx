@@ -305,7 +305,7 @@ export default function MedStudyApp() {
         </header>
       )}
 
-  <main className="max-w-xl mx-auto px-3 py-4 break-words">
+  <main className="max-w-xl mx-auto px-3 py-4">
         {/* Start screen */}
         {mode == null && (
           <div className="space-y-3">
@@ -459,8 +459,8 @@ function Flashcards({ items, onGrade, showInfo, setShowInfo }) {
               const baseCls = 'rounded-xl border px-3 py-1.5 text-sm bg-white'
               const stateCls = revealed && isCorrect ? ' border-emerald-300 bg-emerald-50' : ' border-slate-200'
               return (
-                <div key={i} className={baseCls + stateCls}>
-                  <span className="text-slate-700">
+                <div key={i} className={baseCls + stateCls + ' break-words max-w-full'}>
+                  <span className="text-slate-700 break-words">
                     {String.fromCharCode(65 + i)}. {opt}
                   </span>
                 </div>
@@ -494,7 +494,7 @@ function Flashcards({ items, onGrade, showInfo, setShowInfo }) {
           )}
         </AnimatePresence>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+  <div className="mt-5 flex flex-wrap gap-2">
           <Button className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white gap-2" onClick={() => { onGrade(current.id, true); next() }}>
             <CheckCircle2 className="h-4 w-4"/> Got it
           </Button>
@@ -566,7 +566,7 @@ function Quiz({ items, onGrade }) {
                   key={i}
                   onClick={() => setSelected(i)}
                   className={[
-                    'text-left w-full rounded-xl border p-3 transition-all',
+                    'text-left w-full rounded-xl border p-3 transition-all break-words',
                     'hover:shadow-sm',
                     isSelected ? 'border-purple-400 ring-2 ring-purple-200 bg-purple-50' : 'border-slate-200',
                     showState && isCorrect ? 'border-emerald-300 bg-emerald-50' : '',
@@ -577,7 +577,7 @@ function Quiz({ items, onGrade }) {
                     <div className="h-5 w-5 rounded-full border flex items-center justify-center text-xs">
                       {String.fromCharCode(65 + i)}
                     </div>
-                    <span>{opt}</span>
+                    <span className="min-w-0 break-words">{opt}</span>
                   </div>
                 </button>
               )

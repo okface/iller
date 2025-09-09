@@ -96,8 +96,11 @@ img, video { max-width: 100%; height: auto; }
 .supports-\[backdrop-filter\]:bg-white\/60 { background: rgba(255,255,255,.6); }
 
 /* Text wrapping helpers to avoid horizontal overflow on narrow screens */
-.break-words { overflow-wrap: break-word; word-break: break-word; }
+.break-words { overflow-wrap: anywhere; word-break: break-word; }
 .break-anywhere { overflow-wrap: anywhere; word-break: break-word; }
+
+/* Ensure generic card containers clip stray overflow from children */
+.card-clip { overflow: hidden; }
 
 /* Responsive helpers */
 .hide-on-mobile { display: initial; }

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export function Card({ className = '', children }) {
-  return <div className={["rounded-2xl bg-white border p-4", className].join(' ')}>{children}</div>
+  return <div className={["rounded-2xl bg-white border p-4 card-clip", className].join(' ')}>{children}</div>
 }
 
 export function CardHeader({ className = '', children }) {
