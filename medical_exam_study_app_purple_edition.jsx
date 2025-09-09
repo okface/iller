@@ -334,9 +334,9 @@ export default function MedStudyApp() {
                       <Label htmlFor="randomize" className="text-xs text-slate-500 flex items-center gap-1"><Shuffle className="h-3 w-3"/>Random</Label>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white btn-full-sm" onClick={() => startSession('flashcards')}><Brain className="h-4 w-4 mr-1"/> Flashcards</Button>
-                    <Button className="bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white btn-full-sm" onClick={() => startSession('quiz')}><HelpCircle className="h-4 w-4 mr-1"/> Quiz</Button>
+                  <div className="btn-group">
+                    <Button className="btn bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('flashcards')}><Brain className="h-4 w-4 mr-1"/> <span className="nowrap">Flashcards</span></Button>
+                    <Button className="btn bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white" onClick={() => startSession('quiz')}><HelpCircle className="h-4 w-4 mr-1"/> <span className="nowrap">Quiz</span></Button>
                   </div>
                   <div className="text-xs text-slate-500">{filtered.length} questions available</div>
                 </div>
@@ -445,8 +445,8 @@ function Flashcards({ items, onGrade, showInfo, setShowInfo }) {
           </span>
         )}
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-lg font-medium text-slate-900 leading-snug">{current.question}</h3>
-          <Button size="sm" variant="ghost" className="text-purple-700" onClick={() => setRevealed((r) => !r)}>
+          <h3 className="text-lg font-medium text-slate-900 leading-snug flex-1 min-w-0">{current.question}</h3>
+          <Button size="sm" variant="ghost" className="text-purple-700 flex-shrink-0" onClick={() => setRevealed((r) => !r)}>
             {revealed ? <><EyeOff className="h-4 w-4 mr-1"/>Hide</> : <><Eye className="h-4 w-4 mr-1"/>Reveal</>}
           </Button>
         </div>
